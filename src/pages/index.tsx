@@ -21,10 +21,7 @@ export default function Home() {
       <main style={{ height: "100vh" }}>
         <button
           onClick={() => {
-            console.log("###");
-            document
-              .getElementById("container")
-              ?.dispatchEvent(new CustomEvent("add-edit-node"));
+            document.dispatchEvent(new CustomEvent("add-edit-node"));
           }}
         >
           Add Edit Node

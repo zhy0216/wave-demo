@@ -33,13 +33,12 @@ export const FlowPanel: React.FC = ({}) => {
   });
 
   useEffect(() => {
-    const element = document.getElementById("container");
-    if (element && addEditNode.current) {
-      element.addEventListener("add-edit-node", addEditNode.current);
+    if (document && addEditNode.current) {
+      document.addEventListener("add-edit-node", addEditNode.current);
 
       return () =>
         addEditNode.current &&
-        element.removeEventListener("add-edit-node", addEditNode.current);
+        document.removeEventListener("add-edit-node", addEditNode.current);
     }
   });
 
