@@ -61,13 +61,13 @@ Graph.registerNode(
             portNameLabel: {
               ref: "portBody",
               refX: 12,
-              refY: 6,
+              refY: 0,
               fontSize: 10,
             },
             portTypeLabel: {
               ref: "portBody",
               refX: 95,
-              refY: 6,
+              refY: 0,
               fontSize: 10,
             },
             rect: {
@@ -77,10 +77,9 @@ Graph.registerNode(
               strokeWidth: 1,
               ref: "portBody",
               refX: 2,
-              refY: 9,
-              width: 6,
-              height: 4,
-              position: "right",
+              refY: 1,
+              width: 8,
+              height: 6,
             },
           },
           position: "portPosition",
@@ -106,4 +105,48 @@ Graph.registerPortLayout(
   },
   true
 );
+
+Graph.registerNode(
+  "edit-node",
+  {
+    inherit: "rect",
+    width: 100,
+    height: 40,
+    attrs: {
+      body: {
+        stroke: "#8f8f8f",
+        strokeWidth: 1,
+        fill: "#fff",
+        rx: 6,
+        ry: 6,
+      },
+    },
+    ports: {
+      groups: {
+        right: {
+          position: "right",
+          attrs: {
+            circle: {
+              magnet: true,
+              stroke: "#8f8f8f",
+              r: 5,
+            },
+          },
+        },
+      },
+    },
+    tools: [
+      {
+        name: "node-editor",
+        args: {
+          attrs: {
+            backgroundColor: "#EFF4FF",
+          },
+        },
+      },
+    ],
+  },
+  true
+);
+
 export { FlowPanel } from "./FlowPanel";

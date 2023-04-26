@@ -8,7 +8,7 @@ const testNode = {
   width: 150,
   height: 24,
   position: {
-    x: 24,
+    x: 454,
     y: 150,
   },
   ports: [
@@ -63,6 +63,20 @@ const testNode = {
   ],
 };
 
+const inputNode = {
+  shape: "edit-node",
+  x: 40,
+  y: 140,
+  label: "hello",
+  ports: {
+    items: [
+      {
+        id: "port_1",
+        group: "right",
+      },
+    ],
+  },
+};
 export const FlowPanel: React.FC = ({}) => {
   const graph = useRef<Graph>();
 
@@ -77,14 +91,15 @@ export const FlowPanel: React.FC = ({}) => {
         },
         connecting: {
           allowEdge: false,
-          allowMulti: false,
-          allowPort: false,
+          allowMulti: true,
+          allowPort: true,
           allowBlank: false,
           allowLoop: false,
           allowNode: false,
         },
       });
 
+      graph.current?.addNode(inputNode);
       graph.current?.addNode(testNode);
     }
   });
