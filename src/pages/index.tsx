@@ -19,6 +19,16 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main style={{ height: "100vh" }}>
+        <button
+          onClick={() => {
+            console.log("###");
+            document
+              .getElementById("container")
+              ?.dispatchEvent(new CustomEvent("add-edit-node"));
+          }}
+        >
+          Add Edit Node
+        </button>
         <div id="container"></div>
         <FlowPanel />
       </main>
