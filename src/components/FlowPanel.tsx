@@ -1,98 +1,6 @@
 import { Graph } from "@antv/x6";
 import { useEffect, useRef } from "react";
 
-const LINE_HEIGHT = 24;
-const NODE_WIDTH = 150;
-
-Graph.registerNode(
-  "flow-node",
-  {
-    inherit: "rect",
-    markup: [
-      {
-        tagName: "rect",
-        selector: "body",
-      },
-      {
-        tagName: "text",
-        selector: "label",
-      },
-    ],
-    attrs: {
-      rect: {
-        strokeWidth: 1,
-        stroke: "#5F95FF",
-        fill: "#5F95FF",
-      },
-      label: {
-        fontWeight: "bold",
-        fill: "#ffffff",
-        fontSize: 12,
-      },
-    },
-    ports: {
-      groups: {
-        list: {
-          markup: [
-            {
-              tagName: "rect",
-              selector: "portBody",
-            },
-            {
-              tagName: "text",
-              selector: "portNameLabel",
-            },
-            {
-              tagName: "text",
-              selector: "portTypeLabel",
-            },
-          ],
-          attrs: {
-            portBody: {
-              width: NODE_WIDTH,
-              height: LINE_HEIGHT,
-              strokeWidth: 1,
-              stroke: "#5F95FF",
-              fill: "#EFF4FF",
-              magnet: true,
-            },
-            portNameLabel: {
-              ref: "portBody",
-              refX: 6,
-              refY: 6,
-              fontSize: 10,
-            },
-            portTypeLabel: {
-              ref: "portBody",
-              refX: 95,
-              refY: 6,
-              fontSize: 10,
-            },
-          },
-          position: "portPosition",
-        },
-      },
-    },
-  },
-  true
-);
-
-Graph.registerPortLayout(
-  "portPosition",
-  (portsPositionArgs) => {
-    return portsPositionArgs.map((_, index) => {
-      return {
-        position: {
-          x: 0,
-          y: (index + 1) * LINE_HEIGHT,
-        },
-        angle: 0,
-      };
-    });
-  },
-  true
-);
-
 const testNode = {
   id: "1",
   shape: "flow-node",
@@ -166,6 +74,14 @@ export const FlowPanel: React.FC = ({}) => {
         autoResize: true,
         background: {
           color: "#F2F7FA",
+        },
+        connecting: {
+          allowEdge: false,
+          allowMulti: false,
+          allowPort: false,
+          allowBlank: false,
+          allowLoop: false,
+          allowNode: false,
         },
       });
 
