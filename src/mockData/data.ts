@@ -5,7 +5,7 @@ export const testNode = {
   width: 150,
   height: 24,
   position: {
-    x: 454,
+    x: 150,
     y: 150,
   },
   ports: [
