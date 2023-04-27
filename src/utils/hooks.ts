@@ -5,7 +5,7 @@ import { GraphEvent, GraphHandlerMap } from "./graphEvent";
 // GraphEvent based useEventListener interface
 function useEventListener<K extends GraphEvent>(
   eventName: K,
-  handler: (event: GraphHandlerMap[K]) => void,
+  handler: GraphHandlerMap[K],
   element?: undefined,
   options?: boolean | AddEventListenerOptions
 ): void;

@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { useRef } from "react";
-import { GraphEvent } from "@/utils/graphEvent";
+import { GraphEvent, NodeType } from "@/utils/graphEvent";
 
 const FlowPanel = dynamic(
   () => import("../components").then((m) => m.FlowPanel),
@@ -69,8 +69,8 @@ export default function Home() {
                 e: React.MouseEvent<HTMLDivElement, MouseEvent>
               ) => {
                 window.dispatchEvent(
-                  new CustomEvent("start-drag", {
-                    detail: { evt: e, nodeType: "target" },
+                  new CustomEvent(GraphEvent.START_DRAG, {
+                    detail: { evt: e, nodeType: NodeType.TARGET },
                   })
                 );
               }}
@@ -82,8 +82,8 @@ export default function Home() {
                 e: React.MouseEvent<HTMLDivElement, MouseEvent>
               ) => {
                 window.dispatchEvent(
-                  new CustomEvent("start-drag", {
-                    detail: { evt: e, nodeType: "input" },
+                  new CustomEvent(GraphEvent.START_DRAG, {
+                    detail: { evt: e, nodeType: NodeType.TEXT_INPUT },
                   })
                 );
               }}
@@ -105,7 +105,7 @@ export default function Home() {
             reader.onload = function () {
               const text = reader.result;
               window.dispatchEvent(
-                new CustomEvent("load", {
+                new CustomEvent(GraphEvent.LOAD, {
                   detail: { json: JSON.parse(text as string) },
                 })
               );

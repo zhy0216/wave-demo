@@ -4,7 +4,7 @@ import { inputNode, testNode } from "../mockData/data";
 import { Dnd } from "@antv/x6-plugin-dnd";
 import { saveJson } from "@/utils";
 import useEventListener from "@/utils/hooks";
-import { GraphEvent } from "@/utils/graphEvent";
+import { GraphEvent, NodeType } from "@/utils/graphEvent";
 
 export const FlowPanel: React.FC = ({}) => {
   const graph = useRef<Graph>();
@@ -44,27 +44,21 @@ export const FlowPanel: React.FC = ({}) => {
   useEventListener(GraphEvent.RESET, () => {
     graph.current?.resetCells([]);
   });
+  useEventListener(GraphEvent.START_DRAG, (e) => {
+    if (!graph.current || !dnd.current) return;
+    const { evt, nodeType } = e.detail;
+    const node =
+      nodeType === NodeType.TEXT_INPUT
+        ? graph.current.createNode(inputNode)
+        : graph.current.createNode(testNode);
+    dnd.current.start(node, evt.nativeEvent as any);
+  });
 
-  useEffect(() => {
-    if (document) {
-      document.addEventListener("start-drag", (e) => {
-        if (!graph.current || !dnd.current) return;
+  useEventListener(GraphEvent.LOAD, (e) => {
+    if (!graph.current) return;
 
-        const { evt, nodeType } = (e as any).detail;
-        const node =
-          nodeType === "input"
-            ? graph.current.createNode(inputNode)
-            : graph.current.createNode(testNode);
-        dnd.current.start(node, evt.nativeEvent as any);
-      });
-
-      document.addEventListener("load", (e) => {
-        if (!graph.current) return;
-
-        const { json } = (e as any).detail;
-        graph.current?.fromJSON(json);
-      });
-    }
+    const { json } = e.detail;
+    graph.current?.fromJSON(json);
   });
 
   return <></>;
