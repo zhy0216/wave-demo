@@ -45,6 +45,7 @@ export const FlowPanel: React.FC = () => {
   useEventListener(GraphEvent.RESET, () => {
     graph.current?.resetCells([]);
   });
+
   useEventListener(GraphEvent.START_DRAG, (e) => {
     if (!graph.current || !dnd.current) return;
     const { evt, nodeType } = e.detail;
