@@ -1,7 +1,7 @@
 export const testNode = {
   id: "1",
   shape: "flow-node",
-  label: "学生",
+  label: "Target Node",
   width: 150,
   height: 24,
   position: {

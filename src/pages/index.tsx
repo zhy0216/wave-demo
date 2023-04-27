@@ -33,22 +33,45 @@ export default function Home() {
       </Head>
       <main style={{ height: "100vh" }}>
         <button
+          style={{ marginRight: 15 }}
           onClick={() => {
-            document.dispatchEvent(new CustomEvent("add-edit-node"));
+            document.dispatchEvent(new CustomEvent("save"));
           }}
         >
-          Add Edit Node
+          save
         </button>
-        <div style={{ display: "flex", height: "100%" }}>
+
+        <button
+          onClick={() => {
+            document.dispatchEvent(new CustomEvent("load"));
+          }}
+        >
+          load
+        </button>
+        <div style={{ display: "flex", height: "100%", marginTop: 8 }}>
           <div id="container" style={{ flex: 1 }}></div>
           <div style={{ width: 400 }}>
-            <FlowNode onMouseDown={() => {}}>Target Node</FlowNode>
             <FlowNode
               onMouseDown={(
                 e: React.MouseEvent<HTMLDivElement, MouseEvent>
               ) => {
                 document.dispatchEvent(
-                  new CustomEvent("start-drag", { detail: e })
+                  new CustomEvent("start-drag", {
+                    detail: { evt: e, nodeType: "target" },
+                  })
+                );
+              }}
+            >
+              Target Node
+            </FlowNode>
+            <FlowNode
+              onMouseDown={(
+                e: React.MouseEvent<HTMLDivElement, MouseEvent>
+              ) => {
+                document.dispatchEvent(
+                  new CustomEvent("start-drag", {
+                    detail: { evt: e, nodeType: "input" },
+                  })
                 );
               }}
             >
