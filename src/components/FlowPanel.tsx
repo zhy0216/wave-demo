@@ -3,12 +3,12 @@ import { useEffect, useRef } from "react";
 import { inputNode, testNode } from "../mockData/data";
 import { Dnd } from "@antv/x6-plugin-dnd";
 import { saveJson } from "@/utils";
+import useEventListener from "@/utils/hooks";
+import { GraphEvent } from "@/utils/graphEvent";
 
 export const FlowPanel: React.FC = ({}) => {
   const graph = useRef<Graph>();
   const dnd = useRef<Dnd>();
-
-  const addEditNode = useRef<() => void>();
 
   useEffect(() => {
     const element = document.getElementById("container");
@@ -31,20 +31,22 @@ export const FlowPanel: React.FC = ({}) => {
       dnd.current = new Dnd({
         target: graph.current,
       });
-
-      addEditNode.current = () => {
-        graph.current?.addNode(inputNode);
-      };
     }
   });
 
-  useEffect(() => {
-    if (document && addEditNode.current) {
-      document.addEventListener("add-edit-node", addEditNode.current);
-      document.addEventListener("reset", () => {
-        graph.current?.resetCells([]);
-      });
+  useEventListener(GraphEvent.SAVE, () => {
+    if (!graph.current) return;
 
+    const data = graph.current.toJSON();
+    saveJson(JSON.stringify(data), "test.json");
+  });
+
+  useEventListener(GraphEvent.RESET, () => {
+    graph.current?.resetCells([]);
+  });
+
+  useEffect(() => {
+    if (document) {
       document.addEventListener("start-drag", (e) => {
         if (!graph.current || !dnd.current) return;
 
@@ -56,23 +58,12 @@ export const FlowPanel: React.FC = ({}) => {
         dnd.current.start(node, evt.nativeEvent as any);
       });
 
-      document.addEventListener("save", () => {
-        if (!graph.current) return;
-
-        const data = graph.current.toJSON();
-        saveJson(JSON.stringify(data), "test.json");
-      });
-
       document.addEventListener("load", (e) => {
         if (!graph.current) return;
 
         const { json } = (e as any).detail;
         graph.current?.fromJSON(json);
       });
-
-      return () =>
-        addEditNode.current &&
-        document.removeEventListener("add-edit-node", addEditNode.current);
     }
   });
 

@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { useRef } from "react";
+import { GraphEvent } from "@/utils/graphEvent";
 
 const FlowPanel = dynamic(
   () => import("../components").then((m) => m.FlowPanel),
@@ -38,7 +39,7 @@ export default function Home() {
         <div style={{ display: "flex", columnGap: 8 }}>
           <button
             onClick={() => {
-              document.dispatchEvent(new CustomEvent("save"));
+              window.dispatchEvent(new CustomEvent(GraphEvent.SAVE));
             }}
           >
             save
@@ -54,7 +55,7 @@ export default function Home() {
 
           <button
             onClick={() => {
-              document.dispatchEvent(new CustomEvent("reset"));
+              window.dispatchEvent(new CustomEvent(GraphEvent.RESET));
             }}
           >
             reset
@@ -67,7 +68,7 @@ export default function Home() {
               onMouseDown={(
                 e: React.MouseEvent<HTMLDivElement, MouseEvent>
               ) => {
-                document.dispatchEvent(
+                window.dispatchEvent(
                   new CustomEvent("start-drag", {
                     detail: { evt: e, nodeType: "target" },
                   })
@@ -80,7 +81,7 @@ export default function Home() {
               onMouseDown={(
                 e: React.MouseEvent<HTMLDivElement, MouseEvent>
               ) => {
-                document.dispatchEvent(
+                window.dispatchEvent(
                   new CustomEvent("start-drag", {
                     detail: { evt: e, nodeType: "input" },
                   })
@@ -103,7 +104,7 @@ export default function Home() {
             const reader = new FileReader();
             reader.onload = function () {
               const text = reader.result;
-              document.dispatchEvent(
+              window.dispatchEvent(
                 new CustomEvent("load", {
                   detail: { json: JSON.parse(text as string) },
                 })
