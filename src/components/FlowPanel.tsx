@@ -3,12 +3,13 @@ import { useEffect, useRef } from "react";
 import { inputNode, testNode } from "../mockData/data";
 import { Dnd } from "@antv/x6-plugin-dnd";
 import { saveJson } from "@/utils";
-import useEventListener from "@/utils/hooks";
+import useEventListener from "../utils/useEventListner";
 import { GraphEvent, NodeType } from "@/utils/graphEvent";
 
-export const FlowPanel: React.FC = ({}) => {
+export const FlowPanel: React.FC = () => {
   const graph = useRef<Graph>();
   const dnd = useRef<Dnd>();
+  const ref = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const element = document.getElementById("container");
@@ -61,5 +62,5 @@ export const FlowPanel: React.FC = ({}) => {
     graph.current?.fromJSON(json);
   });
 
-  return <></>;
+  return <div id="container" ref={ref} style={{ flex: 1 }}></div>;
 };

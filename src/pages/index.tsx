@@ -1,10 +1,9 @@
 import Head from "next/head";
 
-import dynamic from "next/dynamic";
-import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { useRef } from "react";
 import { GraphEvent, NodeType } from "@/utils/graphEvent";
+import dynamic from "next/dynamic";
 
 const FlowPanel = dynamic(
   () => import("../components").then((m) => m.FlowPanel),
@@ -62,7 +61,7 @@ export default function Home() {
           </button>
         </div>
         <div style={{ display: "flex", height: "100%", marginTop: 8 }}>
-          <div id="container" style={{ flex: 1 }}></div>
+          <FlowPanel />
           <div style={{ width: 400 }}>
             <FlowNode
               onMouseDown={(
@@ -92,7 +91,6 @@ export default function Home() {
             </FlowNode>
           </div>
         </div>
-        <FlowPanel />
         <input
           type="file"
           style={{ display: "none" }}
