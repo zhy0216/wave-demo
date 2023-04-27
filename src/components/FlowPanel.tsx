@@ -41,6 +41,10 @@ export const FlowPanel: React.FC = ({}) => {
   useEffect(() => {
     if (document && addEditNode.current) {
       document.addEventListener("add-edit-node", addEditNode.current);
+      document.addEventListener("reset", () => {
+        graph.current?.resetCells([]);
+      });
+
       document.addEventListener("start-drag", (e) => {
         if (!graph.current || !dnd.current) return;
 
@@ -57,6 +61,13 @@ export const FlowPanel: React.FC = ({}) => {
 
         const data = graph.current.toJSON();
         saveJson(JSON.stringify(data), "test.json");
+      });
+
+      document.addEventListener("load", (e) => {
+        if (!graph.current) return;
+
+        const { json } = (e as any).detail;
+        graph.current?.fromJSON(json);
       });
 
       return () =>

@@ -3,6 +3,7 @@ import Head from "next/head";
 import dynamic from "next/dynamic";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
+import { useRef } from "react";
 
 const FlowPanel = dynamic(
   () => import("../components").then((m) => m.FlowPanel),
@@ -23,6 +24,8 @@ const FlowNode = styled.div`
 `;
 
 export default function Home() {
+  const jsonFileRef = useRef<HTMLInputElement>(null);
+
   return (
     <>
       <Head>
@@ -32,22 +35,31 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main style={{ height: "100vh" }}>
-        <button
-          style={{ marginRight: 15 }}
-          onClick={() => {
-            document.dispatchEvent(new CustomEvent("save"));
-          }}
-        >
-          save
-        </button>
+        <div style={{ display: "flex", columnGap: 8 }}>
+          <button
+            onClick={() => {
+              document.dispatchEvent(new CustomEvent("save"));
+            }}
+          >
+            save
+          </button>
 
-        <button
-          onClick={() => {
-            document.dispatchEvent(new CustomEvent("load"));
-          }}
-        >
-          load
-        </button>
+          <button
+            onClick={() => {
+              jsonFileRef.current?.click();
+            }}
+          >
+            load
+          </button>
+
+          <button
+            onClick={() => {
+              document.dispatchEvent(new CustomEvent("reset"));
+            }}
+          >
+            reset
+          </button>
+        </div>
         <div style={{ display: "flex", height: "100%", marginTop: 8 }}>
           <div id="container" style={{ flex: 1 }}></div>
           <div style={{ width: 400 }}>
@@ -80,6 +92,28 @@ export default function Home() {
           </div>
         </div>
         <FlowPanel />
+        <input
+          type="file"
+          style={{ display: "none" }}
+          ref={jsonFileRef}
+          onChange={(event) => {
+            // https://stackoverflow.com/a/29176118
+            const input = event.target;
+
+            const reader = new FileReader();
+            reader.onload = function () {
+              const text = reader.result;
+              document.dispatchEvent(
+                new CustomEvent("load", {
+                  detail: { json: JSON.parse(text as string) },
+                })
+              );
+            };
+            if (input.files?.[0]) {
+              reader.readAsText(input.files[0]);
+            }
+          }}
+        />
       </main>
     </>
   );
