@@ -1,7 +1,7 @@
 import { Graph } from "@antv/x6";
 import { useCallback, useEffect, useRef } from "react";
 import { inputNode, testNode } from "../mockData/data";
-import { saveJson } from "@/utils";
+import { saveJsonToFile } from "@/utils";
 import useEventListener from "../utils/useEventListner";
 import { GraphEvent } from "@/utils/graphEvent";
 import { Stencil } from "@antv/x6-plugin-stencil";
@@ -72,7 +72,7 @@ export const FlowPanel: React.FC<Props> = ({ onHistoryChange }) => {
     if (!graphRef.current) return;
 
     const data = graphRef.current.toJSON();
-    saveJson(JSON.stringify(data), "test.json");
+    saveJsonToFile(JSON.stringify(data), "test.json");
   });
 
   useEventListener(GraphEvent.RESET, () => {
@@ -95,12 +95,18 @@ export const FlowPanel: React.FC<Props> = ({ onHistoryChange }) => {
   });
 
   useEffect(() => {
+    fetch("/api/data")
+      .then((r) => r.json())
+      .then((json) => graphRef.current?.fromJSON(json));
+  }, []);
+
+  useEffect(() => {
     if (graphRef.current && onHistoryChange) {
       graphRef.current.on("history:change", onHistoryChangeCallback);
     }
     return () =>
       graphRef.current?.off("history:change", onHistoryChangeCallback) as any;
-  }, [onHistoryChange]);
+  }, [onHistoryChangeCallback]);
 
   return (
     <Container>

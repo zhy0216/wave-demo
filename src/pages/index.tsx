@@ -3,6 +3,7 @@ import Head from "next/head";
 import { useRef, useState } from "react";
 import { GraphEvent } from "@/utils/graphEvent";
 import dynamic from "next/dynamic";
+import { saveJson } from "@/utils";
 
 const FlowPanel = dynamic(
   () => import("../components").then((m) => m.FlowPanel),
@@ -70,6 +71,7 @@ export default function Home() {
         onHistoryChange={(graph) => {
           setCanRedo(graph.canRedo());
           setCanUndo(graph.canUndo());
+          saveJson(graph.toJSON());
         }}
       />
       <input
