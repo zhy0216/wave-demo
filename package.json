@@ -11,6 +11,7 @@
   "dependencies": {
     "@antv/x6": "^2.9.7",
     "@antv/x6-plugin-dnd": "^2.0.5",
+    "@antv/x6-plugin-history": "^2.2.2",
     "@antv/x6-plugin-stencil": "^2.0.3",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",

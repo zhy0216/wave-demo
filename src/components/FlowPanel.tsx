@@ -1,18 +1,28 @@
 import { Graph } from "@antv/x6";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { inputNode, testNode } from "../mockData/data";
 import { saveJson } from "@/utils";
 import useEventListener from "../utils/useEventListner";
 import { GraphEvent } from "@/utils/graphEvent";
 import { Stencil } from "@antv/x6-plugin-stencil";
+import { History } from "@antv/x6-plugin-history";
+
 import styled from "@emotion/styled";
 
-export const FlowPanel: React.FC = () => {
+interface Props {
+  onHistoryChange?: (graph: Graph) => void;
+}
+
+export const FlowPanel: React.FC<Props> = ({ onHistoryChange }) => {
   const graphRef = useRef<Graph>();
   const stencilRef = useRef<Stencil>();
 
   const graphContainerRef = useRef<HTMLDivElement>(null);
   const stencilContainerRef = useRef<HTMLDivElement>(null);
+  const onHistoryChangeCallback = useCallback(
+    () => graphRef.current && onHistoryChange?.(graphRef.current),
+    [onHistoryChange, graphRef.current]
+  );
 
   useEffect(() => {
     const element = graphContainerRef.current;
@@ -32,6 +42,13 @@ export const FlowPanel: React.FC = () => {
           allowNode: false,
         },
       });
+
+      graphRef.current.use(
+        new History({
+          enabled: true,
+        })
+      );
+
       stencilRef.current = new Stencil({
         title: "Flow Node",
         target: graphRef.current,
@@ -62,12 +79,28 @@ export const FlowPanel: React.FC = () => {
     graphRef.current?.resetCells([]);
   });
 
+  useEventListener(GraphEvent.UNDO, () => {
+    graphRef.current?.undo();
+  });
+
+  useEventListener(GraphEvent.REDO, () => {
+    graphRef.current?.redo();
+  });
+
   useEventListener(GraphEvent.LOAD, (e) => {
     if (!graphRef.current) return;
 
     const { json } = e.detail;
     graphRef.current?.fromJSON(json);
   });
+
+  useEffect(() => {
+    if (graphRef.current && onHistoryChange) {
+      graphRef.current.on("history:change", onHistoryChangeCallback);
+    }
+    return () =>
+      graphRef.current?.off("history:change", onHistoryChangeCallback) as any;
+  }, [onHistoryChange]);
 
   return (
     <Container>

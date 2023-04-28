@@ -6,5 +6,5 @@ export function saveJson(content: string, fileName: string) {
   a.click();
 }
 
-export { GraphEvent, NodeType, type GraphHandlerMap } from "./graphEvent";
+export { GraphEvent, type GraphHandlerMap } from "./graphEvent";
 export * from "./useEventListner";

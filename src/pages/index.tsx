@@ -1,6 +1,6 @@
 import Head from "next/head";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { GraphEvent } from "@/utils/graphEvent";
 import dynamic from "next/dynamic";
 
@@ -13,6 +13,8 @@ const FlowPanel = dynamic(
 
 export default function Home() {
   const jsonFileRef = useRef<HTMLInputElement>(null);
+  const [canUndo, setCanUndo] = useState(false);
+  const [canRedo, setCanRedo] = useState(false);
 
   return (
     <>
@@ -46,8 +48,30 @@ export default function Home() {
         >
           reset
         </button>
+
+        <button
+          onClick={() => {
+            window.dispatchEvent(new CustomEvent(GraphEvent.UNDO));
+          }}
+          disabled={!canUndo}
+        >
+          undo
+        </button>
+        <button
+          onClick={() => {
+            window.dispatchEvent(new CustomEvent(GraphEvent.REDO));
+          }}
+          disabled={!canRedo}
+        >
+          redo
+        </button>
       </div>
-      <FlowPanel />
+      <FlowPanel
+        onHistoryChange={(graph) => {
+          setCanRedo(graph.canRedo());
+          setCanUndo(graph.canUndo());
+        }}
+      />
       <input
         type="file"
         style={{ display: "none" }}
