@@ -32,21 +32,6 @@ export const FlowPanel: React.FC = () => {
       dnd.current = new Dnd({
         target: graph.current,
       });
-
-      // 鼠标 Hover 时添加按钮
-      graph.current.on("node:mouseenter", ({ node }) => {
-        node.addTools([
-          {
-            name: "button-remove",
-            args: { x: 10, y: 10 },
-          },
-        ]);
-      });
-
-      // 鼠标移开时删除按钮
-      graph.current.on("node:mouseleave", ({ node }) => {
-        node.removeTools(); // 删除所有的工具
-      });
     }
   });
 
@@ -68,6 +53,12 @@ export const FlowPanel: React.FC = () => {
       nodeType === NodeType.TEXT_INPUT
         ? graph.current.createNode(inputNode)
         : graph.current.createNode(testNode);
+    node.addTools([
+      {
+        name: "button-remove",
+        args: { x: 10, y: 10 },
+      },
+    ]);
     dnd.current.start(node, evt.nativeEvent as any);
   });
 
