@@ -11,7 +11,6 @@ export async function saveJson(content: any) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      // 'Content-Type': 'application/x-www-form-urlencoded',
     },
     body: JSON.stringify(content),
   });

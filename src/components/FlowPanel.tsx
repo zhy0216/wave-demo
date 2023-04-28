@@ -101,7 +101,7 @@ export const FlowPanel: React.FC<Props> = ({ onHistoryChange }) => {
   }, []);
 
   useEffect(() => {
-    if (graphRef.current && onHistoryChange) {
+    if (graphRef.current) {
       graphRef.current.on("history:change", onHistoryChangeCallback);
     }
     return () =>

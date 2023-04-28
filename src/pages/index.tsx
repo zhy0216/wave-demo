@@ -16,6 +16,7 @@ export default function Home() {
   const jsonFileRef = useRef<HTMLInputElement>(null);
   const [canUndo, setCanUndo] = useState(false);
   const [canRedo, setCanRedo] = useState(false);
+  const [showAutoSave, setShowAutoSave] = useState(false);
 
   return (
     <>
@@ -66,12 +67,16 @@ export default function Home() {
         >
           redo
         </button>
+        {showAutoSave && <div>auto save ...</div>}
       </div>
       <FlowPanel
         onHistoryChange={(graph) => {
           setCanRedo(graph.canRedo());
           setCanUndo(graph.canUndo());
-          saveJson(graph.toJSON());
+          setShowAutoSave(true);
+          saveJson(graph.toJSON()).then(() => {
+            setShowAutoSave(false);
+          });
         }}
       />
       <input
