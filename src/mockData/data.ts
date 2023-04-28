@@ -4,9 +4,16 @@ export const testNode = {
   label: "Target Node",
   width: 150,
   height: 24,
+  tools: [
+    {
+      name: "button-remove",
+      args: { x: 10, y: 10 },
+    },
+  ],
+
   position: {
-    x: 150,
-    y: 150,
+    x: 0,
+    y: 0,
   },
   ports: [
     {
@@ -62,9 +69,15 @@ export const testNode = {
 
 export const inputNode = {
   shape: "edit-node",
-  x: 40,
-  y: 140,
+  x: 0,
+  y: 0,
   label: "hello",
+  tools: [
+    {
+      name: "button-remove",
+      args: { x: 10, y: 10 },
+    },
+  ],
   ports: {
     items: [
       {

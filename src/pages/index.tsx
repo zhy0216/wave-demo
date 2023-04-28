@@ -12,17 +12,6 @@ const FlowPanel = dynamic(
   }
 );
 
-const FlowNode = styled.div`
-  width: 100px;
-  height: 40px;
-  margin: 16px;
-  line-height: 40px;
-  text-align: center;
-  border: 1px solid #8f8f8f;
-  border-radius: 6px;
-  cursor: move;
-`;
-
 export default function Home() {
   const jsonFileRef = useRef<HTMLInputElement>(null);
 
@@ -60,37 +49,7 @@ export default function Home() {
             reset
           </button>
         </div>
-        <div style={{ display: "flex", height: "100%", marginTop: 8 }}>
-          <FlowPanel />
-          <div style={{ width: 400 }}>
-            <FlowNode
-              onMouseDown={(
-                e: React.MouseEvent<HTMLDivElement, MouseEvent>
-              ) => {
-                window.dispatchEvent(
-                  new CustomEvent(GraphEvent.START_DRAG, {
-                    detail: { evt: e, nodeType: NodeType.TARGET },
-                  })
-                );
-              }}
-            >
-              Target Node
-            </FlowNode>
-            <FlowNode
-              onMouseDown={(
-                e: React.MouseEvent<HTMLDivElement, MouseEvent>
-              ) => {
-                window.dispatchEvent(
-                  new CustomEvent(GraphEvent.START_DRAG, {
-                    detail: { evt: e, nodeType: NodeType.TEXT_INPUT },
-                  })
-                );
-              }}
-            >
-              Input Node
-            </FlowNode>
-          </div>
-        </div>
+        <FlowPanel />
         <input
           type="file"
           style={{ display: "none" }}
