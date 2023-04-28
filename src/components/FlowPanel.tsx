@@ -5,6 +5,7 @@ import { saveJson } from "@/utils";
 import useEventListener from "../utils/useEventListner";
 import { GraphEvent } from "@/utils/graphEvent";
 import { Stencil } from "@antv/x6-plugin-stencil";
+import styled from "@emotion/styled";
 
 export const FlowPanel: React.FC = () => {
   const graphRef = useRef<Graph>();
@@ -14,7 +15,7 @@ export const FlowPanel: React.FC = () => {
   const stencilContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const element = document.getElementById("container");
+    const element = graphContainerRef.current;
     if (element && !graphRef.current) {
       graphRef.current = new Graph({
         container: element,
@@ -69,12 +70,20 @@ export const FlowPanel: React.FC = () => {
   });
 
   return (
-    <div style={{ display: "flex", height: "100%", marginTop: 8 }}>
-      <div id="container" ref={graphContainerRef} style={{ flex: 1 }}></div>
-      <div
-        ref={stencilContainerRef}
-        style={{ position: "relative", width: 400 }}
-      ></div>
-    </div>
+    <Container>
+      <div ref={graphContainerRef} style={{ flex: 1 }}></div>
+      <StencilContainer ref={stencilContainerRef}></StencilContainer>
+    </Container>
   );
 };
+
+const Container = styled.div`
+  display: flex;
+  height: 100vh;
+  margin-top: 8px;
+`;
+
+const StencilContainer = styled.div`
+  position: relative;
+  width: 400px;
+`;

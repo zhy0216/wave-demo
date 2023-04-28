@@ -1,8 +1,7 @@
 import Head from "next/head";
 
-import styled from "@emotion/styled";
 import { useRef } from "react";
-import { GraphEvent, NodeType } from "@/utils/graphEvent";
+import { GraphEvent } from "@/utils/graphEvent";
 import dynamic from "next/dynamic";
 
 const FlowPanel = dynamic(
@@ -23,56 +22,54 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main style={{ height: "100vh" }}>
-        <div style={{ display: "flex", columnGap: 8 }}>
-          <button
-            onClick={() => {
-              window.dispatchEvent(new CustomEvent(GraphEvent.SAVE));
-            }}
-          >
-            save
-          </button>
-
-          <button
-            onClick={() => {
-              jsonFileRef.current?.click();
-            }}
-          >
-            load
-          </button>
-
-          <button
-            onClick={() => {
-              window.dispatchEvent(new CustomEvent(GraphEvent.RESET));
-            }}
-          >
-            reset
-          </button>
-        </div>
-        <FlowPanel />
-        <input
-          type="file"
-          style={{ display: "none" }}
-          ref={jsonFileRef}
-          onChange={(event) => {
-            // https://stackoverflow.com/a/29176118
-            const input = event.target;
-
-            const reader = new FileReader();
-            reader.onload = function () {
-              const text = reader.result;
-              window.dispatchEvent(
-                new CustomEvent(GraphEvent.LOAD, {
-                  detail: { json: JSON.parse(text as string) },
-                })
-              );
-            };
-            if (input.files?.[0]) {
-              reader.readAsText(input.files[0]);
-            }
+      <div style={{ display: "flex", columnGap: 8 }}>
+        <button
+          onClick={() => {
+            window.dispatchEvent(new CustomEvent(GraphEvent.SAVE));
           }}
-        />
-      </main>
+        >
+          save
+        </button>
+
+        <button
+          onClick={() => {
+            jsonFileRef.current?.click();
+          }}
+        >
+          load
+        </button>
+
+        <button
+          onClick={() => {
+            window.dispatchEvent(new CustomEvent(GraphEvent.RESET));
+          }}
+        >
+          reset
+        </button>
+      </div>
+      <FlowPanel />
+      <input
+        type="file"
+        style={{ display: "none" }}
+        ref={jsonFileRef}
+        onChange={(event) => {
+          // https://stackoverflow.com/a/29176118
+          const input = event.target;
+
+          const reader = new FileReader();
+          reader.onload = function () {
+            const text = reader.result;
+            window.dispatchEvent(
+              new CustomEvent(GraphEvent.LOAD, {
+                detail: { json: JSON.parse(text as string) },
+              })
+            );
+          };
+          if (input.files?.[0]) {
+            reader.readAsText(input.files[0]);
+          }
+        }}
+      />
     </>
   );
 }
